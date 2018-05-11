@@ -39,7 +39,7 @@ void power_consumption_loop(int fd) {
  			clock_gettime(CLOCK_MONOTONIC_RAW, &tv);
  			double end = tv.tv_sec + tv.tv_nsec * 1e-9;
  			//fprintf(stderr, "Read %d values in %.3f milliseconds\n", cnt, (end - start) * 1000);
- 			fprintf(stderr, "average value was %.1f\n", sum / cnt);
+ 			fprintf(stderr, "%.1f\n", sum / cnt);
  			cnt = 0;
  			sum = 0;
  		}
