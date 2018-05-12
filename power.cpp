@@ -12,7 +12,7 @@
 using namespace std;
 
 /**
- * Dump average power consumption value to stdout
+ * Dump average power consumption value to stderr
  */
 void power_consumption_loop(int fd) {
  	int cnt = 0;
