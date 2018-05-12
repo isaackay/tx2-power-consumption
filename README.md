@@ -8,12 +8,18 @@ data produced by this repo is for vros research.
 make
 ./power <mode>
 ```
+- Example of getting the power consumption data by normalizing with power
+  consumption in idle state.
+```
+./power wifi &> dump-orig/roller_wifi.txt
+./avg.py dump-orig/roller_wifi.txt idle/idle-wifi.txt
+```
 
 ## Results
 - SOC
 
 | Video Name		| 		SOC 		| 	cropped-SOC		 |
-| ----------------- |:-----------------:| ------------------:|
+| ----------------- |:-----------------:|:------------------:|
 | Rhino             |421.57167024210776 | 149.19671136203203 |
 | Elephant          |342.9747455032526  | 123.27536187949954 |
 
@@ -21,7 +27,7 @@ make
 - WIFI
 
 | Video Name		| 		WIFI 		| 	cropped-WIFI	 |
-| ----------------- |:-----------------:| ------------------:|
+| ----------------- |:-----------------:|:------------------:|
 | Rhino             |408.2678801849605  | 76.16265801128202  |
 | Elephant          |469.85200658562457 | 124.38192337517566 |
 
