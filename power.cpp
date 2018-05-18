@@ -48,8 +48,8 @@ void power_consumption_loop(int fd, FILE *fp) {
  			struct timespec tv;
  			clock_gettime(CLOCK_MONOTONIC_RAW, &tv);
  			double end = tv.tv_sec + tv.tv_nsec * 1e-9;
- 			fprintf(stderr, "Read %d values in %.3f milliseconds\n", cnt, (end - start) * 1000);
- 			fprintf(fp, "%.3f\n", (end - start) * 1000);
+ 			//fprintf(stderr, "Read %d values in %.3f milliseconds\n", cnt, (end - start) * 1000);
+ 			fprintf(fp, "%.3f\n", sum / cnt);
 			fflush(fp);
  			cnt = 0;
  			sum = 0;

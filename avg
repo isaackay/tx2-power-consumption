@@ -1,0 +1,42 @@
+#!/usr/bin/python3
+
+import sys
+import os
+
+def average_from_path(path):
+	sum = 0.0
+	cnt = 0
+	with open(path, 'r') as f:
+		for line in f:
+			sum += float(line)
+			cnt += 1
+	return sum / cnt
+
+if __name__ == "__main__":
+	if len(sys.argv) == 1:
+		paths = ["dump-cropped", "dump-orig-no-drag", "dump-orig-drag"]
+		names = ["elephant"] #, "rhino", "paris", "nyc", "roller"]
+		power_files = ["ddr", "soc", "cpu", "gpu", "wifi"]
+		for path in paths:
+			for name in names:
+				for pf in power_files:
+					target_path = path + '/' + name + "_" + pf + '.txt'
+					idle_path = "idle/idle_" + pf + '.txt'
+					print(target_path, idle_path)
+					value = average_from_path(target_path) - average_from_path(idle_path)
+					print(value)
+	elif len(sys.argv) == 2:
+		path = sys.argv[1]
+		names = ["elephant"] #, "rhino", "paris", "nyc", "roller"]
+		power_files = ["ddr", "soc", "cpu", "gpu", "wifi"]
+		for name in names:
+			for pf in power_files:
+				target_path = path + '/' + name + "_" + pf + '.txt'
+				idle_path = "idle/idle_" + pf + '.txt'
+				print(target_path, idle_path)
+				value = average_from_path(target_path) - average_from_path(idle_path)
+				print(value)
+	else:
+		path = sys.argv[1]
+		baseline_path = sys.argv[2]
+		print(average_from_path(path) - average_from_path(baseline_path))
