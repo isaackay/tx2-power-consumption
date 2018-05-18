@@ -3,16 +3,16 @@ This repository is for automated creating power consumption data from tx2. The
 data produced by this repo is for vros research.
 
 ## Usage
-- mode could be "wifi" or "soc" currently.
+- mode could be `wifi`, `cpu`, `soc`, `ddr`, or `all` 
 ```
 make
-./power <mode>
+./power <mode> <title w/o file extension>
 ```
 - Example of getting the power consumption data by normalizing with power
   consumption in idle state.
 ```
-./power wifi &> dump-orig/roller_wifi.txt
-./avg.py dump-orig/roller_wifi.txt idle/idle-wifi.txt
+./power ddr dump-orig/roller
+./avg.py dump-orig/roller_ddr.txt idle/idle-ddr.txt
 ```
 
 ## Results

@@ -7,9 +7,19 @@
 #include <time.h>
 
 #include <string>
+#include <vector>
 #include <map>
+#include <thread>
 
 using namespace std;
+
+map <string, string> pc_map;
+
+void power_consumption_loop(int fd, FILE *fp);
+
+void single_power_loop(const string &mode, const string &title);
+
+int Open(const char *s, int mode);
 
 /**
  * Dump average power consumption value to stderr
@@ -47,6 +57,19 @@ void power_consumption_loop(int fd, FILE *fp) {
  	}
 }
 
+void single_power_loop(const string &mode, const string &title) {
+	if (pc_map.find(mode) != pc_map.end()) {
+		string found = pc_map[mode];
+		int fd = Open(found.c_str(), O_RDONLY | O_NONBLOCK);
+		string out_name = title + "_" + mode + ".txt";
+		printf("%s\n", out_name.c_str());
+		FILE *fp = fopen(out_name.c_str(), "w");
+ 		if (fp) {
+ 			power_consumption_loop(fd, fp);
+ 		}
+	}
+}
+
 /**
  * Wrapper for open
  */
@@ -59,12 +82,14 @@ int Open(const char *s, int mode) {
 	return fd;
 }
 
+void dd() {
+}
+
 /**
  * Usage: ./power <mode> title
  * mode could be wifi, soc, cpu, ddr or all.
  */
 int main(int argc, char *argv[]) {
-	map <string, string> pc_map;
 	pc_map.insert(pair<string, string>("gpu",
 	"/sys/devices/3160000.i2c/i2c-0/0-0040/iio_device/in_power0_input"));
 	pc_map.insert(pair<string, string>("soc",
@@ -76,22 +101,23 @@ int main(int argc, char *argv[]) {
 	pc_map.insert(pair<string, string>("ddr",
 	"/sys/devices/3160000.i2c/i2c-0/0-0041/iio_device/in_power2_input"));
 
-	string mode = string(argv[1]);
-	string title = string(argv[2]);
+	const string mode = string(argv[1]);
+	const string title = string(argv[2]);
 
 	if (argc != 3) {
 		fprintf(stderr, "Please enter the mode.\n");
 		exit(1);
 	} else {
-		if (pc_map.find(mode) != pc_map.end()) {
-			string found = pc_map[mode];
-			int fd = Open(found.c_str(), O_RDONLY | O_NONBLOCK);
-			string out_name = title + "_" + mode + ".txt";
-			printf("%s\n", out_name.c_str());
-			FILE *fp = fopen(out_name.c_str(), "w");
-			if (fp) {
-				power_consumption_loop(fd, fp);
+		if (mode == "all") {
+			vector<thread> t_vec;
+			for (auto &m : pc_map) {
+				t_vec.push_back(thread(single_power_loop, m.first, title));
 			}
+			for (auto &t : t_vec) {
+				t.join();
+			}
+		} else {
+			single_power_loop(mode, title);
 		}
 	}
 
