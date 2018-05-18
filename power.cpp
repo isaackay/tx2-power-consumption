@@ -14,7 +14,7 @@ using namespace std;
 /**
  * Dump average power consumption value to stderr
  */
-void power_consumption_loop(int fd) {
+void power_consumption_loop(int fd, FILE *fp) {
  	int cnt = 0;
  	double sum = 0;
  	double start = 0;
@@ -38,8 +38,9 @@ void power_consumption_loop(int fd) {
  			struct timespec tv;
  			clock_gettime(CLOCK_MONOTONIC_RAW, &tv);
  			double end = tv.tv_sec + tv.tv_nsec * 1e-9;
- 			//fprintf(stderr, "Read %d values in %.3f milliseconds\n", cnt, (end - start) * 1000);
- 			fprintf(stderr, "%.1f\n", sum / cnt);
+ 			fprintf(stderr, "Read %d values in %.3f milliseconds\n", cnt, (end - start) * 1000);
+ 			fprintf(fp, "%.3f\n", (end - start) * 1000);
+			fflush(fp);
  			cnt = 0;
  			sum = 0;
  		}
@@ -47,30 +48,50 @@ void power_consumption_loop(int fd) {
 }
 
 /**
- * Usage: ./power <mode>
- * mode could be wifi or soc.
+ * Wrapper for open
+ */
+int Open(const char *s, int mode) {
+	int fd = open(s, mode);
+	if (fd < 0) {
+		perror("open()");
+		exit(1);
+	}
+	return fd;
+}
+
+/**
+ * Usage: ./power <mode> title
+ * mode could be wifi, soc, cpu, ddr or all.
  */
 int main(int argc, char *argv[]) {
 	map <string, string> pc_map;
+	pc_map.insert(pair<string, string>("gpu",
+	"/sys/devices/3160000.i2c/i2c-0/0-0040/iio_device/in_power0_input"));
 	pc_map.insert(pair<string, string>("soc",
 	"/sys/devices/3160000.i2c/i2c-0/0-0040/iio_device/in_power1_input"));
 	pc_map.insert(pair<string, string>("wifi",
 	"/sys/devices/3160000.i2c/i2c-0/0-0040/iio_device/in_power2_input"));
+	pc_map.insert(pair<string, string>("cpu",
+	"/sys/devices/3160000.i2c/i2c-0/0-0041/iio_device/in_power1_input"));
+	pc_map.insert(pair<string, string>("ddr",
+	"/sys/devices/3160000.i2c/i2c-0/0-0041/iio_device/in_power2_input"));
 
-	if (argc != 2) {
-		fprintf(stderr, "Please input wifi or soc.\n");
+	string mode = string(argv[1]);
+	string title = string(argv[2]);
+
+	if (argc != 3) {
+		fprintf(stderr, "Please enter the mode.\n");
 		exit(1);
 	} else {
-		string input = string(argv[1]);
-		if (pc_map.find(input) != pc_map.end()) {
-			string found = pc_map[input];
-			int fd = open(found.c_str(), O_RDONLY | O_NONBLOCK);
-			if (fd < 0) {
-				perror("open()");
-				exit(1);
+		if (pc_map.find(mode) != pc_map.end()) {
+			string found = pc_map[mode];
+			int fd = Open(found.c_str(), O_RDONLY | O_NONBLOCK);
+			string out_name = title + "_" + mode + ".txt";
+			printf("%s\n", out_name.c_str());
+			FILE *fp = fopen(out_name.c_str(), "w");
+			if (fp) {
+				power_consumption_loop(fd, fp);
 			}
-
-			power_consumption_loop(fd);
 		}
 	}
 
