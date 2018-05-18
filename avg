@@ -15,7 +15,7 @@ def average_from_path(path):
 if __name__ == "__main__":
 	if len(sys.argv) == 1:
 		paths = ["dump-cropped", "dump-orig-no-drag", "dump-orig-drag"]
-		names = ["elephant"] #, "rhino", "paris", "nyc", "roller"]
+		names = ["elephant", "rhino", "roller"] #, "paris", "nyc"]
 		power_files = ["ddr", "soc", "cpu", "gpu", "wifi"]
 		for path in paths:
 			for name in names:
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 					print(value)
 	elif len(sys.argv) == 2:
 		path = sys.argv[1]
-		names = ["elephant"] #, "rhino", "paris", "nyc", "roller"]
+		names = ["elephant", "rhino", "roller"] # "paris", "nyc"]
 		power_files = ["ddr", "soc", "cpu", "gpu", "wifi"]
 		for name in names:
 			for pf in power_files:

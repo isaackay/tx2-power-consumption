@@ -24,7 +24,9 @@ data produced by this repo is for vros research.
 	  position of idle foler)
 
 ## Results
-TODO
+- TODO dump csv from raw data
+- the drag version of gpu power consumption is not significantly larger than the
+non-drag version, which is wierd
 
 ### Reference
 https://devtalk.nvidia.com/default/topic/1000830/jetson-tx2/jetson-tx2-ina226-power-monitor-with-i2c-interface-/
