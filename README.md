@@ -24,9 +24,47 @@ data produced by this repo is for vros research.
 	  position of idle foler)
 
 ## Results
-- TODO dump csv from raw data
-- the drag version of gpu power consumption is not significantly larger than the
-non-drag version, which is wierd
+- soc = `gpu + cpu + ddr + soc`
+- wifi = `wifi`
+- 360 = 1080p 360 vr video
+- normal = normal 1080p video
+- Render and WIFI power could be calculated using "normal" in each video
+- Reproject power could be `360.soc` - `normal.soc`
+
+```
+{  
+   'elephant':{  
+      '360':{  
+         'soc':3418.755637598899,
+         'wifi':86.74614912280694
+      },
+      'normal':{  
+         'soc':1697.451873077865,
+         'wifi':55.01736450742237
+      }
+   },
+   'rhino':{  
+      '360':{  
+         'soc':3245.1562674463935,
+         'wifi':75.62248245614029
+      },
+      'normal':{  
+         'soc':1538.7666179910561,
+         'wifi':48.289825593395165
+      }
+   },
+   'roller':{  
+      '360':{  
+         'soc':3603.7657804255855,
+         'wifi':70.65156470722255
+      },
+      'normal':{  
+         'soc':1813.3973485281895,
+         'wifi':75.185109122807
+      }
+   }
+}
+```
 
 ### Reference
 https://devtalk.nvidia.com/default/topic/1000830/jetson-tx2/jetson-tx2-ina226-power-monitor-with-i2c-interface-/
