@@ -26,43 +26,46 @@ data produced by this repo is for vros research.
 ## Results
 - soc = `gpu + cpu + ddr + soc`
 - wifi = `wifi`
-- 360 = 1080p 360 vr video
-- normal = normal 1080p video
+- 360 = 4k 360 vr video with viewport 1280x720
+- normal = normal 1080p video with viewport 1280x720
 - Render and WIFI power could be calculated using "normal" in each video
 - Reproject power could be `360.soc` - `normal.soc`
+- Take elephant video as an example for computing power constant for each cache
+  level (L1: 1600x1600, L2: 2800x2160, L3: 3840x2160):
+	- SOC
+		- Reprojection power constant of viewport@1280x720=`(3944.53 - 2002.86)
+		  = 1941.67`
+		- Rendering power constant of viewport@1280x720=`2002.86`
+		- L1: `2002.86 * 1600 * 1600 / 1280 / 720` = 5563.5
+		- L2: `(2002.86 * 2800 * 2160 / 1280 / 720) + (1941.67 * 2800 * 2160 /
+		  1280 / 720)` = 25885.98
+		- L3: `(3944.53 * 3840 * 2160 / 1280 / 720)` = 35500.77
+	- WIFI
+		- 360 version of WIFI is a 4K video, normal version of WIFI is for 1080p
+		- However, 360 version of WIFI is not four times or more than the normal
+		  version of WIFI
+		- And the reason might be simple - Youtube or the router in UR has
+		  bandwidth management so that WIFI power has a limit that couldn't
+		  afford downloading 4k 360 video smoothly
+		- So I choose simply scale the normal version using pixel!
+		- L1: `108.18 * 1600 * 1600 / 1920 / 1080` = 133.56
+		- L2: `108.18 * 2800 * 2160 / 1920 / 1080` = 315.53
+		- L3: `108.18 * 3840 * 2160 / 1280 / 720` = 432.72
 
 ```
 {  
-   'elephant':{  
-      '360':{  
-         'soc':3418.755637598899,
-         'wifi':86.74614912280694
-      },
-      'normal':{  
-         'soc':1697.451873077865,
-         'wifi':55.01736450742237
-      }
-   },
-   'rhino':{  
-      '360':{  
-         'soc':3245.1562674463935,
-         'wifi':75.62248245614029
-      },
-      'normal':{  
-         'soc':1538.7666179910561,
-         'wifi':48.289825593395165
-      }
-   },
-   'roller':{  
-      '360':{  
-         'soc':3603.7657804255855,
-         'wifi':70.65156470722255
-      },
-      'normal':{  
-         'soc':1813.3973485281895,
-         'wifi':75.185109122807
-      }
-   }
+	{  
+	   'elephant':{  
+		  '360':{  
+			 'soc':3944.5344700918963,
+			 'wifi':355.14874912280703
+		  },
+		  'normal':{  
+			 'soc':2002.856742013078,
+			 'wifi':108.17957769423555
+		  }
+	   }
+	}
 }
 ```
 

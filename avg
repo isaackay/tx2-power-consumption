@@ -18,8 +18,8 @@ if __name__ == "__main__":
 	# Usage: ./avg
 	# Effect: Output the json data of power constant
 	if len(sys.argv) == 1:
-		paths = ["1080-360", "1080p"]
-		names = ["elephant", "rhino", "roller"] #, "paris", "nyc"]
+		paths = ["4k_360", "1080p"]
+		names = ["elephant"] # "rhino", "roller"] #, "paris", "nyc"]
 		power_files = ["ddr", "soc", "cpu", "gpu", "wifi"]
 		name_dict = {}
 		for name in names:
@@ -34,13 +34,16 @@ if __name__ == "__main__":
 					target_path = path + '/' + name + "_" + pf + '.txt'
 					idle_path = "idle/idle_" + pf + '.txt'
 					# print(target_path, idle_path)
+					# print(average_from_path(target_path),
+					# average_from_path(idle_path))
+
 					value = average_from_path(target_path) - average_from_path(idle_path)
 					if path == "1080p":
 						if pf != "wifi":
 							normal_dict["soc"] += value
 						else:
 							normal_dict["wifi"] += value
-					if path == "1080-360":
+					if path == "4k_360":
 						if pf != "wifi":
 							vr_dict["soc"] += value
 						else:
