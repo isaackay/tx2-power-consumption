@@ -60,8 +60,8 @@ data produced by this repo is for vros research.
          'wifi':355.14874912280703
       },
       'normal':{  
-         'soc':2002.856742013078,
-         'wifi':108.17957769423555
+         'soc':2905.3881458682936,
+         'wifi':54.331439445387616
       }
    },
    'nyc':{  
@@ -90,8 +90,8 @@ data produced by this repo is for vros research.
          'wifi':284.177549122807
       },
       'normal':{  
-         'soc':1870.9887947300117,
-         'wifi':-12.51890643274858
+         'soc':1816.2819824741846,
+         'wifi':22.40641578947364
       }
    },
    'roller':{  
