@@ -19,7 +19,7 @@ if __name__ == "__main__":
 	# Effect: Output the json data of power constant
 	if len(sys.argv) == 1:
 		paths = ["4k_360", "1080p"]
-		names = ["elephant"] # "rhino", "roller"] #, "paris", "nyc"]
+		names = ["elephant", "rhino", "roller", "paris", "nyc"]
 		power_files = ["ddr", "soc", "cpu", "gpu", "wifi"]
 		name_dict = {}
 		for name in names:
