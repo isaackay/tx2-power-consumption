@@ -17,7 +17,7 @@ data produced by this repo is for vros research.
 	```
 - avg
 	- no argument
-		- dump all version of power constant files
+		- dump all version of power constant files as json
 	- one argument (folder such as 'dump-orig-no-drag')
 		- dump power constant files in that folder
 	- two arguments (first argument is same as above, second argument is the
