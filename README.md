@@ -3,7 +3,7 @@ This repository is for automated creating power consumption data from tx2. The
 data produced by this repo is for vros research.
 
 ## Usage
-- power
+- power.cpp
 	- mode could be `wifi`, `cpu`, `soc`, `ddr`, or `all` 
 	```
 	make
@@ -12,16 +12,12 @@ data produced by this repo is for vros research.
 	- Example of getting the power consumption data by normalizing with power
 	  consumption in idle state.
 	```
-	./power ddr dump-orig/roller
-	./avg.py dump-orig/roller_ddr.txt idle/idle-ddr.txt
+	./power all dump-orig/roller
+	python3 avg.py
 	```
-- avg
-	- no argument
-		- dump all version of power constant files as json
-	- one argument (folder such as 'dump-orig-no-drag')
-		- dump power constant files in that folder
-	- two arguments (first argument is same as above, second argument is the
-	  position of idle foler)
+- avg.py
+	- `python3 avg.py`
+		- dump the 360 and 1080p version of power constant in each video as json
 
 ## Results
 - soc = `gpu + cpu + ddr + soc`
@@ -29,28 +25,17 @@ data produced by this repo is for vros research.
 - 360 = 4k 360 vr video with viewport 1280x720
 - normal = normal 1080p video with viewport 1280x720
 - Render and WIFI power could be calculated using "normal" in each video
-- Reproject power could be `360.soc` - `normal.soc`
+- Reproject power of Level 2 frame is HARD TO KNOW CURRENTLY, so skip it for now
 - Take elephant video as an example for computing power constant for each cache
-  level (L1: 1600x1600, L2: 2800x2160, L3: 3840x2160):
+  level (L1: 1440x1440, L3: 3840x2160):
 	- SOC
-		- Reprojection power constant of viewport@1280x720=`(3944.53 - 2002.86)
-		  = 1941.67`
-		- Rendering power constant of viewport@1280x720=`2002.86`
-		- L1: `2002.86 * 1600 * 1600 / 1280 / 720` = `5563.5`
-		- L2: `(2002.86 * 2800 * 2160 / 1280 / 720) + (1941.67 * 2800 * 2160 /
-		  1280 / 720)` = `25885.98`
-		- L3: `(3944.53 * 3840 * 2160 / 1280 / 720)` = `35500.77`
+		- Rendering of L1=`2905.3881458682936`
+		- Rendering + Reprojection of full size 360 video=`3944.5344700918963`
+		- L1: `2905.3881458682936`
+		- L3: `3944.5344700918963`
 	- WIFI
-		- 360 version of WIFI is a 4K video, normal version of WIFI is for 1080p
-		- However, 360 version of WIFI is not four times or more than the normal
-		  version of WIFI
-		- And the reason might be simple - Youtube or the router in UR has
-		  bandwidth management so that WIFI power has a limit that couldn't
-		  afford downloading 4k 360 video smoothly
-		- So I choose simply scale the normal version using pixel!
-		- L1: `108.18 * 1600 * 1600 / 1920 / 1080` = `133.56`
-		- L2: `108.18 * 2800 * 2160 / 1920 / 1080` = `315.53`
-		- L3: `108.18 * 3840 * 2160 / 1280 / 720` = `432.72`
+		- L1: `54.331439445387616`
+		- L3: `355.14874912280703`
 
 ```
 {  

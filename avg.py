@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import sys
 import os
 import pprint
@@ -15,10 +13,10 @@ def average_from_path(path):
     return sum / cnt
 
 
+# Usage: ./avg
+# Effect: Output the json data of power constant
 if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
-    # Usage: ./avg
-    # Effect: Output the json data of power constant
     if len(sys.argv) == 1:
         paths = ["4k_360", "1080p"]
         names = ["elephant", "rhino", "roller", "paris", "nyc"]
@@ -53,18 +51,3 @@ if __name__ == "__main__":
             # print(value)
             name_dict[name] = {"360": vr_dict, "normal": normal_dict}
         pp.pprint(name_dict)
-    elif len(sys.argv) == 2:
-        path = sys.argv[1]
-        names = ["elephant", "rhino", "roller"]  # "paris", "nyc"]
-        power_files = ["ddr", "soc", "cpu", "gpu", "wifi"]
-        for name in names:
-            for pf in power_files:
-                target_path = path + '/' + name + "_" + pf + '.txt'
-                idle_path = "idle/idle_" + pf + '.txt'
-                print(target_path, idle_path)
-                value = average_from_path(target_path) - average_from_path(idle_path)
-                print(value)
-    else:
-        path = sys.argv[1]
-        baseline_path = sys.argv[2]
-        print(average_from_path(path) - average_from_path(baseline_path))
